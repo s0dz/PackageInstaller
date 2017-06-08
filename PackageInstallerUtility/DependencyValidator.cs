@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace PackageInstallerExercise
+namespace PackageInstallerUtility
 {
     public class DependencyValidator
     {
