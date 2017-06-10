@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace PackageInstallerUtility
 {
@@ -7,7 +6,17 @@ namespace PackageInstallerUtility
     {
         public string Validate(string[] packageDependencies)
         {
-            var packageDependenciesString = String.Join(String.Empty, packageDependencies);
+            // private string[] _validInput1 = { "KittenService: CamelCaser", "CamelCaser: " };
+            // private string _validOutput1 = "CamelCaser, KittenService";
+
+            foreach (var packageDependency in packageDependencies)
+            {
+                var parts = packageDependency.Split(':');
+
+
+            }
+
+            var packageDependenciesString = string.Join(string.Empty, packageDependencies);
 
             Regex.Replace(packageDependenciesString, @"\s+", "");
 
