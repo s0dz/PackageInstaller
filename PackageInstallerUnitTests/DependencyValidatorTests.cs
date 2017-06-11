@@ -37,8 +37,7 @@ namespace PackageInstallerUnitTests
 
             Assert.AreEqual(result, invalidOutput);
         }
-
-        //private string validInput1 = "[\"KittenService: CamelCaser\", \"CamelCaser: \"]";
+        
         private string[] _validInput1 = { "KittenService: CamelCaser", "CamelCaser: " };
         private string _validOutput1 = "CamelCaser, KittenService";
 

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 
 namespace PackageInstallerUtility
@@ -9,7 +11,8 @@ namespace PackageInstallerUtility
         {
             // private string[] _validInput1 = { "KittenService: CamelCaser", "CamelCaser: " };
             // private string _validOutput1 = "CamelCaser, KittenService";
-            var dictionary = new Dictionary<string, string>();
+            // var packageDependencyDictionary = new Dictionary<string, string>();
+            var packageDependencyDictionary = new List<KeyValuePair<string, string>>();
             var stringList = new List<string>();
             var result = "";
 
@@ -18,43 +21,44 @@ namespace PackageInstallerUtility
                 // Split input into two strings for each string array
                 var parts = packageDependency.Split(':');
 
+                // Remove whitespace after colon
                 parts[0] = Regex.Replace(parts[0], @"\s+", "");
                 parts[1] = Regex.Replace(parts[1], @"\s+", "");
 
-                dictionary.Add(parts[0],parts[1]);
+                packageDependencyDictionary.Add(new KeyValuePair<string, string>(parts[0],parts[1]));
             }
 
             // Go through each pair
-            var count = 0;
-            foreach (var keyValuePair in dictionary)
+            var count = packageDependencies.Length;
+            while(count > 0)
             {
-
-                if (keyValuePair.Value.Equals(""))
+                count -= 1;
+                if (packageDependencyDictionary[count].Value.Equals(""))
                 {
                     if (stringList.Count == 0)
                     {
-                        stringList.Add(keyValuePair.Value);
+                        stringList.Add(packageDependencyDictionary[count].Key);
                     }
                     else
                     {
-                        stringList.Insert(0, keyValuePair.Value);
+                        stringList.Insert(0, packageDependencyDictionary[count].Value);
                     }
                 }
 
-                if (stringList.Contains(keyValuePair.Key))
+                if (stringList.Contains(packageDependencyDictionary[count].Key))
                 {
-                    stringList.Insert(count+1, keyValuePair.Value);
+                    stringList.Insert(packageDependencies.Length - count, packageDependencyDictionary[count].Value);
                 }
                 else
                 {
-                    stringList.Insert(0, keyValuePair.Value);
+                    stringList.Insert(0, packageDependencyDictionary[count].Value);
                 }
             }
 
             var packageDependenciesString = string.Join(string.Empty, packageDependencies);
 
             count++;
-            return "";
+            return result;
         }
     }
 }
