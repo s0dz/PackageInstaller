@@ -26,6 +26,8 @@ namespace PackageInstallerUtility
                 parts[0] = Regex.Replace(parts[0], @"\s+", "");
                 parts[1] = Regex.Replace(parts[1], @"\s+", "");
 
+                if(parts[1] == "") { stringList.Add(parts[0]);}
+
                 packageDependencyDictionary.Add(new KeyValuePair<string, string>(parts[0],parts[1]));
                 keylist.Add(parts[0]);
             }
