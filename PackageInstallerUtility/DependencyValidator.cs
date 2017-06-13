@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace PackageInstallerUtility
@@ -26,38 +27,42 @@ namespace PackageInstallerUtility
                 parts[0] = Regex.Replace(parts[0], @"\s+", "");
                 parts[1] = Regex.Replace(parts[1], @"\s+", "");
 
-                if(parts[1] == "") { stringList.Add(parts[0]);}
 
                 packageDependencyDictionary.Add(new KeyValuePair<string, string>(parts[0],parts[1]));
                 keylist.Add(parts[0]);
             }
 
-            FindPackage(packageDependencyDictionary[0].Value, packageDependencyDictionary, keylist);
+           
+
+            var hi = FindPackage(packageDependencyDictionary.Count - 1, packageDependencyDictionary);
 
             var packageDependenciesString = string.Join(string.Empty, packageDependencies);
             return result;
         }
 
-        public string FindPackage(string value, List<KeyValuePair<string, string>> packageDependencyDictionary, List<string> keylist)
+        public List<string> FindPackage(int count, List<KeyValuePair<string, string>> packageDependencyDictionary)
         {
-            for (int i = 0; i < keylist.Count; i++)
+            if (count == 0)
             {
-                if (value.Equals(""))
+                return stringList;
+            }
+            for (var i = 1; i < packageDependencyDictionary.Count; i++)
+            {
+                if (packageDependencyDictionary[count].Value.Equals(""))
                 {
-                    stringList.Add(keylist[i]);
-                    FindPackage(packageDependencyDictionary[i+1].Value, packageDependencyDictionary, keylist);
+                    stringList.Add(packageDependencyDictionary[count].Key);
+                    FindPackage(count - 1, packageDependencyDictionary);
                 }
-                else
+                else if (packageDependencyDictionary[i].Value == packageDependencyDictionary[count].Value)
                 {
-                    if (keylist.Contains(value))
-                    {
-                        stringList.Add(value);
-                        FindPackage(packageDependencyDictionary[i].Key, packageDependencyDictionary, keylist);
-                    }
+                    stringList.Add(packageDependencyDictionary[count].Key);
+                    FindPackage(count - 1, packageDependencyDictionary);
                 }
             }
+            
+            
 
-            return "";
+            return stringList;
         }
     }
 
